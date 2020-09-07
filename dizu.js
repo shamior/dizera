@@ -7,6 +7,7 @@ window.confirm = () => true
 let regExSiteInsta = /https:\/\/instagram\.com|https:\/\/www\.instagram\.com/i
 let relogaPerfis = false
 let secondsToIniate = 120
+let navegador = 0
 
 const contagemPerfil = {
     "perfil": '',
@@ -16,8 +17,8 @@ const contagemPerfil = {
 }
 
 const listaDePerfis = []
-document.querySelectorAll("#instagram_id option").forEach((element, index)=> listaDePerfis.push({'perfil': element.text, 'done': false, 'idx': index}))
-listaDePerfis[0].done = true
+document.querySelectorAll("#instagram_id option").forEach((element, index)=> listaDePerfis.push({'perfil': element.text, 'done': true, 'idx': index}))
+listaDePerfis.shift()
 
 function receiveMessage(event){
     let data = event.data
@@ -31,15 +32,14 @@ function receiveMessage(event){
     }else if (data == 'logou'){
         console.log('=== Logado no perfil ' + perfilLogado.perfil + ' ===')
         let index = perfilLogado.idx
-        console.log('=== Esperando ' + secondsToIniate + ' segundos para iniciar tarefas neste perfil ===')
-        window.setTimeout(init, secondsToIniate * 1000, index, true)
+        console.log('=== Esperando ' + secondsToIniate  + ' segundos para iniciar tarefas neste perfil ===')
+        window.setTimeout(selecionaInstagram, (secondsToIniate - 3) * 1000, index, true)
     }else if (data == 'erroAcharPerfil'){
         console.warn('Nao foi possivel achar o instagram ' + perfilLogado.perfil + ' nas suas contas salvas do instagram')
         perfilLogado.done = true;
         let proxPerfil = getAvailableInstagram()
         if(proxPerfil == null){
             console.warn('===== ACABOU OS PERFIS =====')
-            deixaPerfisDisponiveis()
         }else{
             printa('\n')
             console.log('=== Logando no perfil ===' + proxPerfil.perfil)
@@ -54,9 +54,16 @@ function receiveMessage(event){
     }
 }
 
+function init(nav=1){
+    navegador = nav - 1
+    deixaPerfisDisponiveis()
+    window.setTimeout(selecionaInstagram, 4000, (navegador*5) + 1)
+}
+
+
 function getAvailableInstagram(){
     let tam = listaDePerfis.length
-    for(let index = 1; index < tam; index++){
+    for(let index = 0; index < tam; index++){
         if (!listaDePerfis[index].done) return listaDePerfis[index]
     }
     return null
@@ -72,16 +79,15 @@ function getSelectedInstagram(){
     return null
 }
 
-function init(index=1){
+function selecionaInstagram(index){
     relogaPerfis = true
     document.querySelectorAll("#instagram_id option")[index].selected = true
-    window.setTimeout(iniciaTarefas, 3000, true)
+    window.setTimeout(iniciaTarefas, 3000)
 }
 
-function iniciaTarefas(r=false){
+function iniciaTarefas(){
     let hora = new Date()
     console.log('=== Iniciando... ===')
-    relogaPerfis = r
     contagemPerfil.perfil = getSelectedInstagram().text
     document.querySelector('#iniciarTarefas').click()
     window.setTimeout(comunicaComOInsta, 7000)
@@ -147,7 +153,6 @@ function logOut(){
     let proxPerfil = getAvailableInstagram()
     if(proxPerfil == null){
         console.warn('===== ACABOU OS PERFIS =====')
-        deixaPerfisDisponiveis()
     }else{
         printa('\n')
         console.log('=== Logando no perfil ' + proxPerfil.perfil + ' ===')
@@ -160,4 +165,12 @@ function logOut(){
     }
 }
 
-const deixaPerfisDisponiveis = () => listaDePerfis.forEach((e, idx)=> idx == 0 ? e.done = true : e.done = false)
+function deixaPerfisDisponiveis(){
+    let tam = listaDePerfis.length
+    let comecoLaco = navegador*5
+    let fimLacoProposto = comecoLaco + 5
+    let fimLaco = fimLacoProposto >= tam ? tam : fimLacoProposto
+    for (let index = comecoLaco; index < fimLaco; index++){
+        listaDePerfis[index].done = false
+    }
+}
