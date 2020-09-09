@@ -38,8 +38,10 @@ function receiveMessage(event){
         console.warn('Nao foi possivel achar o instagram ' + perfilLogado.perfil + ' nas suas contas salvas do instagram')
         logOut(perfilLogado, 'clicarEntrar')
     }else if (data == 'ban') {
-        console.warn('<<<<USUARIO ' + perfilLogado.perfil + ' BANIDO>>>>\n<<<<TENTANDO LOGAR NO PROXIMO PERFIL...>>>>')
-        logOut(perfilLogado, 'LogOut')
+        console.error('<<<<USUARIO ' + perfilLogado.perfil + ' BANIDO>>>>')
+        if (relogaPerfis){
+            logOut(perfilLogado, 'LogOut')
+        }
     }
 }
 

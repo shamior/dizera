@@ -67,12 +67,7 @@ function seguir(){
                 }else{
                     botaoSeguirSozinho.click()
                 }
-                let isBanned = document.getElementsByClassName('_7UhW9   xLCgt      MMzan   _0PwGv         uL8Hv         ')[0] != null
-                if (isBanned){
-                    window.opener.postMessage('ban', siteDoDizu)
-                }else{
-                    window.setTimeout(mandaConfirmar, 4000)
-                }
+                window.setTimeout(verifyBan, 3000)
             }else{
                 window.opener.postMessage('erroPerfil', siteDoDizu)
             }
@@ -96,12 +91,7 @@ function curtir(){
             let nomeDoPerfil = listaFotosPerfil[listaFotosPerfil.length - 1].alt.split(' ').pop()
             if (regexPerfil.test(nomeDoPerfil)){
                 botaoCurtir.click()
-                let isBanned = document.getElementsByClassName('_7UhW9   xLCgt      MMzan   _0PwGv         uL8Hv         ')[0] != null
-                if (isBanned){
-                    window.opener.postMessage('ban', siteDoDizu)
-                }else{
-                    window.setTimeout(mandaConfirmar, 4000)
-                }
+                window.setTimeout(verifyBan, 3000)
             }else{
                 window.opener.postMessage('erroPerfil', siteDoDizu)
             }
@@ -157,4 +147,11 @@ function clicaEntrar(){
     }
 }
 
-
+function verifyBan(){
+    let isBanned = document.getElementsByClassName('_7UhW9   xLCgt      MMzan   _0PwGv         uL8Hv         ')[0] != null
+    if (isBanned){
+        window.opener.postMessage('ban', siteDoDizu)
+    }else{
+        window.setTimeout(mandaConfirmar, 4000)
+    }
+}
