@@ -1,5 +1,5 @@
 let printa = console.log
-console.log = (e)=> {let hora = new Date(); printa(hora.toLocaleTimeString()+' ==>', e)}
+console.log = (e)=> {let hora = new Date(); printa(hora.toLocaleTimeString()+' >> ', e)}
 let nomeDaJanelaFilha = 'nomezaoTop'
 let wd = window.open('https://www.instagram.com', nomeDaJanelaFilha)
 window.addEventListener('message', receiveMessage, false);
@@ -86,19 +86,25 @@ function selecionaInstagram(index){
 }
 
 function iniciaTarefas(){
-    let hora = new Date()
     console.log('=== Iniciando... ===')
     contagemPerfil.perfil = getSelectedInstagram().text
     document.querySelector('#iniciarTarefas').click()
-    window.setTimeout(comunicaComOInsta, 7000)
+    window.setTimeout(comunicaComOInsta, 7000, 0)
 }
 
-function comunicaComOInsta(){
+function comunicaComOInsta(turn){
     let comTarefas = document.querySelector('.marginT2.semTarefas.hide')
     let isLoading = document.querySelector('.loaderDiv').style.display == 'inline'
     if (isLoading){ //se estiver carregando proxima acao
-        console.log('carregandooooo')
-        window.setTimeout(comunicaComOInsta, 4000) //espera
+        if (turn < 5){
+            console.log('carregandooooo')
+        }else {
+            if (turn % 6 == 5){
+                console.log('carregandooooo')
+                document.querySelector('#iniciarTarefas').click()
+            }
+        }
+        window.setTimeout(comunicaComOInsta, 4000, turn+1)
     }else if (comTarefas == null) { //ou seja, esta sem tarefas
         let total = contagemPerfil.numeroConfirmados + contagemPerfil.numeroPulados
         let stringAcoes = ''
@@ -137,14 +143,14 @@ function confirmaTarefa(){
     botaoConfirmaTarefa.click()
     contagemPerfil.numeroConfirmados++
     contagemPerfil.total++
-    window.setTimeout(comunicaComOInsta, 13000)
+    window.setTimeout(comunicaComOInsta, 13000, 0)
 }
 
 function pulaTarefa(){
     let botaoPulaTarefa = document.querySelector('.btn-dizu.bg-orange.sombra.marginT1.Bradius5.pularTarefa button')
     botaoPulaTarefa.click()
     contagemPerfil.numeroPulados++
-    window.setTimeout(comunicaComOInsta, 13000)
+    window.setTimeout(comunicaComOInsta, 13000, 0)
 }
 
 function logOut(){
