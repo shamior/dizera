@@ -36,21 +36,10 @@ function receiveMessage(event){
         window.setTimeout(selecionaInstagram, (secondsToIniate - 3) * 1000, index, true)
     }else if (data == 'erroAcharPerfil'){
         console.warn('Nao foi possivel achar o instagram ' + perfilLogado.perfil + ' nas suas contas salvas do instagram')
-        perfilLogado.done = true;
-        let proxPerfil = getAvailableInstagram()
-        if(proxPerfil == null){
-            console.warn('===== ACABOU OS PERFIS =====')
-        }else{
-            printa('\n')
-            console.log('=== Logando no perfil ===' + proxPerfil.perfil)
-            let objeto = {
-                'perfil': proxPerfil.perfil,
-                'action': 'clicarEntrar',
-                'link': 'https://www.instagram.com'
-            }
-            wd.postMessage(objeto, 'https://www.instagram.com')
-        }
-
+        logOut(perfilLogado, 'clicarEntrar')
+    }else if (data == 'ban') {
+        console.warn('<<<<USUARIO ' + perfilLogado.perfil + ' BANIDO>>>>\n<<<<TENTANDO LOGAR NO PROXIMO PERFIL...>>>>')
+        logOut(perfilLogado, 'LogOut')
     }
 }
 
@@ -119,7 +108,7 @@ function comunicaComOInsta(turn){
         contagemPerfil.numeroConfirmados = 0
         contagemPerfil.numeroPulados = 0
         if (relogaPerfis){
-            logOut()
+            logOut(getAvailableInstagram(), 'LogOut')
         }
     }else{
         let objeto = {
@@ -153,9 +142,8 @@ function pulaTarefa(){
     window.setTimeout(comunicaComOInsta, 13000, 0)
 }
 
-function logOut(){
-    let perfilAtual = getSelectedInstagram().text
-    listaDePerfis.forEach((element)=> {if(element.perfil == perfilAtual) element.done = true})
+function logOut(perfilAtual, action){
+    perfilAtual.done = true
     let proxPerfil = getAvailableInstagram()
     if(proxPerfil == null){
         console.warn('===== ACABOU OS PERFIS =====')
@@ -164,7 +152,7 @@ function logOut(){
         console.log('=== Logando no perfil ' + proxPerfil.perfil + ' ===')
         let objeto = {
             'perfil': proxPerfil.perfil,
-            'action': 'LogOut',
+            'action': action,
             'link': 'https://www.instagram.com'
         }
         wd.postMessage(objeto, 'https://www.instagram.com')

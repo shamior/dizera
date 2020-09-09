@@ -67,7 +67,12 @@ function seguir(){
                 }else{
                     botaoSeguirSozinho.click()
                 }
-                window.setTimeout(mandaConfirmar, 4000)
+                let isBanned = document.getElementsByClassName('_7UhW9   xLCgt      MMzan   _0PwGv         uL8Hv         ')[0] != null
+                if (isBanned){
+                    window.opener.postMessage('ban', siteDoDizu)
+                }else{
+                    window.setTimeout(mandaConfirmar, 4000)
+                }
             }else{
                 window.opener.postMessage('erroPerfil', siteDoDizu)
             }
@@ -91,7 +96,12 @@ function curtir(){
             let nomeDoPerfil = listaFotosPerfil[listaFotosPerfil.length - 1].alt.split(' ').pop()
             if (regexPerfil.test(nomeDoPerfil)){
                 botaoCurtir.click()
-                window.setTimeout(mandaConfirmar, 4000)
+                let isBanned = document.getElementsByClassName('_7UhW9   xLCgt      MMzan   _0PwGv         uL8Hv         ')[0] != null
+                if (isBanned){
+                    window.opener.postMessage('ban', siteDoDizu)
+                }else{
+                    window.setTimeout(mandaConfirmar, 4000)
+                }
             }else{
                 window.opener.postMessage('erroPerfil', siteDoDizu)
             }
