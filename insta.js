@@ -148,7 +148,7 @@ function clicaEntrar(){
 }
 
 function verifyBan(){
-    let isBanned = document.getElementsByClassName('_7UhW9   xLCgt      MMzan   _0PwGv         uL8Hv         ')[0] != null
+    let isBanned = document.getElementsByClassName('piCib')[0] != null
     if (isBanned){
         window.opener.postMessage('ban', siteDoDizu)
     }else{
