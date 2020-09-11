@@ -39,6 +39,7 @@ function receiveMessage(event){
         logOut(perfilLogado, 'clicarEntrar')
     }else if (data == 'ban') {
         console.error('<<<<USUARIO ' + perfilLogado.perfil + ' BANIDO>>>>')
+        mostraTotalPerfil()
         if (relogaPerfis){
             logOut(perfilLogado, 'LogOut')
         }
@@ -97,18 +98,7 @@ function comunicaComOInsta(turn){
         }
         window.setTimeout(comunicaComOInsta, 4000, turn+1)
     }else if (comTarefas == null) { //ou seja, esta sem tarefas
-        let total = contagemPerfil.numeroConfirmados + contagemPerfil.numeroPulados
-        let stringAcoes = ''
-        stringAcoes += '========  TA SEM TAREFAS OPORA ========'
-        stringAcoes += '\n\nTOTAL CONFIRMADO ATE AGORA: ' + contagemPerfil.total
-        stringAcoes += '\n\nPerfil: ' + contagemPerfil.perfil
-        stringAcoes += '\nAcoes confirmadas: ' + contagemPerfil.numeroConfirmados
-        stringAcoes += '\nAcoes puladas: ' + contagemPerfil.numeroPulados
-        stringAcoes += '\nTotal: ' + total
-        console.log(stringAcoes)
-        contagemPerfil.perfil = ''
-        contagemPerfil.numeroConfirmados = 0
-        contagemPerfil.numeroPulados = 0
+        mostraTotalPerfil()
         if (relogaPerfis){
             logOut(getAvailableInstagram(), 'LogOut')
         }
@@ -169,4 +159,19 @@ function deixaPerfisDisponiveis(){
     for (let index = comecoLaco; index < fimLaco; index++){
         listaDePerfis[index].done = false
     }
+}
+
+function mostraTotalPerfil(){
+    let total = contagemPerfil.numeroConfirmados + contagemPerfil.numeroPulados
+    let stringAcoes = ''
+    stringAcoes += '========  TA SEM TAREFAS OPORA ========'
+    stringAcoes += '\n\nTOTAL CONFIRMADO ATE AGORA: ' + contagemPerfil.total
+    stringAcoes += '\n\nPerfil: ' + contagemPerfil.perfil
+    stringAcoes += '\nAcoes confirmadas: ' + contagemPerfil.numeroConfirmados
+    stringAcoes += '\nAcoes puladas: ' + contagemPerfil.numeroPulados
+    stringAcoes += '\nTotal: ' + total
+    console.log(stringAcoes)
+    contagemPerfil.perfil = ''
+    contagemPerfil.numeroConfirmados = 0
+    contagemPerfil.numeroPulados = 0
 }
