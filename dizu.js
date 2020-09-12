@@ -8,6 +8,7 @@ let regExSiteInsta = /https:\/\/instagram\.com|https:\/\/www\.instagram\.com/i
 let relogaPerfis = false
 let secondsToIniate = 120
 let navegador = 0
+let limiteAcoesPerfil = 100
 
 const contagemPerfil = {
     "perfil": '',
@@ -124,7 +125,11 @@ function confirmaTarefa(){
     botaoConfirmaTarefa.click()
     contagemPerfil.numeroConfirmados++
     contagemPerfil.total++
-    window.setTimeout(comunicaComOInsta, 13000, 0)
+    if (contagemPerfil.numeroConfirmados >= limiteAcoesPerfil){
+        window.setTimeout(chegouLimite, 10000)
+    }else{
+        window.setTimeout(comunicaComOInsta, 13000, 0)
+    }
 }
 
 function pulaTarefa(){
@@ -174,4 +179,10 @@ function mostraTotalPerfil(){
     contagemPerfil.perfil = ''
     contagemPerfil.numeroConfirmados = 0
     contagemPerfil.numeroPulados = 0
+}
+
+function chegouLimite(){
+    console.log("== LIMITE DE ACOES NO PERFIL ALCANÇADA ==")
+    mostraTotalPerfil()
+    logOut(getAvailableInstagram(), 'LogOut')
 }
