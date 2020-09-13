@@ -9,6 +9,8 @@ let relogaPerfis = false
 let secondsToIniate = 120
 let navegador = 0
 let limiteAcoesPerfil = 100
+const stringLimiteAcoes = 'LIMITE DE ACOES NO PERFIL ALCANÇADA'
+const stringSemTarefas = 'TA SEM TAREFAS OPORA'
 
 const contagemPerfil = {
     "perfil": '',
@@ -40,7 +42,7 @@ function receiveMessage(event){
         logOut(perfilLogado, 'clicarEntrar')
     }else if (data == 'ban') {
         console.error('<<<<USUARIO ' + perfilLogado.perfil + ' BANIDO>>>>')
-        mostraTotalPerfil()
+        mostraTotalPerfil(stringSemTarefas)
         if (relogaPerfis){
             logOut(perfilLogado, 'LogOut')
         }
@@ -99,7 +101,7 @@ function comunicaComOInsta(turn){
         }
         window.setTimeout(comunicaComOInsta, 4000, turn+1)
     }else if (comTarefas == null) { //ou seja, esta sem tarefas
-        mostraTotalPerfil()
+        mostraTotalPerfil(stringSemTarefas)
         if (relogaPerfis){
             logOut(getAvailableInstagram(), 'LogOut')
         }
@@ -166,10 +168,10 @@ function deixaPerfisDisponiveis(){
     }
 }
 
-function mostraTotalPerfil(){
+function mostraTotalPerfil(string){
     let total = contagemPerfil.numeroConfirmados + contagemPerfil.numeroPulados
     let stringAcoes = ''
-    stringAcoes += '========  TA SEM TAREFAS OPORA ========'
+    stringAcoes += '========  '+string+'  ========'
     stringAcoes += '\n\nTOTAL CONFIRMADO ATE AGORA: ' + contagemPerfil.total
     stringAcoes += '\n\nPerfil: ' + contagemPerfil.perfil
     stringAcoes += '\nAcoes confirmadas: ' + contagemPerfil.numeroConfirmados
@@ -182,7 +184,8 @@ function mostraTotalPerfil(){
 }
 
 function chegouLimite(){
-    console.log("== LIMITE DE ACOES NO PERFIL ALCANÇADA ==")
-    mostraTotalPerfil()
-    logOut(getAvailableInstagram(), 'LogOut')
+    mostraTotalPerfil(stringLimiteAcoes)
+    if (relogaPerfis){
+        logOut(getAvailableInstagram(), 'LogOut')
+    }
 }
