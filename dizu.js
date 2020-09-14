@@ -8,7 +8,7 @@ let regExSiteInsta = /https:\/\/instagram\.com|https:\/\/www\.instagram\.com/i
 let relogaPerfis = false
 let secondsToIniate = 120
 let navegador = 0
-let limiteAcoesPerfil = 100
+let limiteAcoesPerfil = 200
 const stringLimiteAcoes = 'LIMITE DE ACOES NO PERFIL ALCANÇADA'
 const stringSemTarefas = 'TA SEM TAREFAS OPORA'
 
@@ -41,7 +41,7 @@ function receiveMessage(event){
         console.warn('Nao foi possivel achar o instagram ' + perfilLogado.perfil + ' nas suas contas salvas do instagram')
         logOut(perfilLogado, 'clicarEntrar')
     }else if (data == 'ban') {
-        console.error('<<<<USUARIO ' + perfilLogado.perfil + ' BANIDO>>>>')
+        console.error('<<<<USUARIO ' + contagemPerfil.perfil + ' BANIDO>>>>')
         mostraTotalPerfil(stringSemTarefas)
         if (relogaPerfis){
             logOut(perfilLogado, 'LogOut')
