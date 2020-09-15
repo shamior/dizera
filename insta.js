@@ -45,7 +45,7 @@ function seguir(){
     let isPrivate = janelaFilha.document.getElementsByClassName('_4Kbb_ _54f4m')[0]
     let isPorno = janelaFilha.document
     .getElementsByClassName('error-container -cx-PRIVATE-ErrorPage__errorContainer -cx-PRIVATE-ErrorPage__errorContainer__')[0]
-    let botaoSendMessage = janelaFilha.document.getElementsByClassName('fAR91 sqdOP  L3NKy _4pI4F   _8A5w5    ')[0]
+    let botaoSendMessage = janelaFilha.document.getElementsByClassName('sqdOP  L3NKy _4pI4F   _8A5w5    ')[0]
     let pageNotLoaded = (botaoSeguir == null) && (botaoSeguirSozinho == null)
     pageNotLoaded = pageNotLoaded && (botaoSendMessage == null) && (isPrivate == null) && (isPorno == null)
     pageNotLoaded = pageNotLoaded && (pageNotAvailable == null)

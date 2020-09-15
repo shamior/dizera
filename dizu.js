@@ -8,7 +8,7 @@ let regExSiteInsta = /https:\/\/instagram\.com|https:\/\/www\.instagram\.com/i
 let relogaPerfis = false
 let secondsToIniate = 120
 let navegador = 0
-let limiteAcoesPerfil = 200
+let limiteAcoesPerfil = 100
 const stringLimiteAcoes = 'LIMITE DE ACOES NO PERFIL ALCANÇADA'
 const stringSemTarefas = 'TA SEM TAREFAS OPORA'
 
