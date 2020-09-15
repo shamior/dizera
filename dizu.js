@@ -192,6 +192,8 @@ function mostraTotalPerfil(string){
 }
 
 function chegouLimite(){
+    jQuery(".box_user.tarefa").remove()
+    jQuery('.semTarefas').removeClass('hide')
     mostraTotalPerfil(stringLimiteAcoes)
     if (relogaPerfis){
         logOut(getAvailableInstagram(), 'LogOut')
