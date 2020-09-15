@@ -8,9 +8,10 @@ let regExSiteInsta = /https:\/\/instagram\.com|https:\/\/www\.instagram\.com/i
 let relogaPerfis = false
 let secondsToIniate = 120
 let navegador = 0
-let limiteAcoesPerfil = 100
+let limiteAcoesPerfil = 80
 const stringLimiteAcoes = 'LIMITE DE ACOES NO PERFIL ALCANÇADA'
 const stringSemTarefas = 'TA SEM TAREFAS OPORA'
+const stringResumo = 'RESUMO DO PERFIL'
 
 const contagemPerfil = {
     "perfil": '',
@@ -23,30 +24,37 @@ const listaDePerfis = []
 document.querySelectorAll("#instagram_id option").forEach((element, index)=> listaDePerfis.push({'perfil': element.text, 'done': true, 'idx': index}))
 listaDePerfis.shift()
 
-function receiveMessage(event){
-    let data = event.data
-    let perfilLogado = getAvailableInstagram()
-    if (data == 'confirma'){
-        confirmaTarefa()
-    }else if (data == 'pula'){
-        pulaTarefa()
-    }else if (data == 'erroPerfil'){
+const messageEventHandler = {
+    "confirma": confirmaTarefa,
+    "pula": pulaTarefa,
+    "erroPerfil": ()=>{
         console.warn('Perfil selecionado no dizu esta diferente do perfil logado no instagram\nPausando tarefas...')
-    }else if (data == 'logou'){
+    },
+    "logou": ()=>{
+        let perfilLogado = getAvailableInstagram()
         console.log('=== Logado no perfil ' + perfilLogado.perfil + ' ===')
         let index = perfilLogado.idx
         console.log('=== Esperando ' + secondsToIniate  + ' segundos para iniciar tarefas neste perfil ===')
         window.setTimeout(selecionaInstagram, (secondsToIniate - 3) * 1000, index, true)
-    }else if (data == 'erroAcharPerfil'){
+    },
+    "erroAcharPerfil": ()=>{
+        let perfilLogado = getAvailableInstagram()
         console.warn('Nao foi possivel achar o instagram ' + perfilLogado.perfil + ' nas suas contas salvas do instagram')
         logOut(perfilLogado, 'clicarEntrar')
-    }else if (data == 'ban') {
+    },
+    "ban": ()=>{
         console.error('<<<<USUARIO ' + contagemPerfil.perfil + ' BANIDO>>>>')
-        mostraTotalPerfil(stringSemTarefas)
+        mostraTotalPerfil(stringResumo)
         if (relogaPerfis){
             logOut(perfilLogado, 'LogOut')
         }
     }
+}
+
+function receiveMessage(event){
+    let data = event.data
+    let func = messageEventHandler[data]
+    func()
 }
 
 function init(nav=1){
@@ -87,7 +95,7 @@ function iniciaTarefas(){
     window.setTimeout(comunicaComOInsta, 7000, 0)
 }
 
-function comunicaComOInsta(turn){
+function comunicaComOInsta(turn=0){
     let comTarefas = document.querySelector('.marginT2.semTarefas.hide')
     let isLoading = document.querySelector('.loaderDiv').style.display == 'inline'
     if (isLoading){ //se estiver carregando proxima acao
